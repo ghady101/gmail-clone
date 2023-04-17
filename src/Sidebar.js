@@ -15,15 +15,21 @@ import {
 	Duo,
 	Phone,
 } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { openSendMessage } from './features/mailSlice';
 
 // if one icon in import we have to say blablaIcon but if all at once we dont have to say icon we just say blabla
 
 function Sidebar() {
+	const dispatch = useDispatch();
 	return (
 		<div className='sidebar'>
 			<Button
 				className='sidebar__compose'
 				startIcon={<AddIcon fontSize='large' />}
+				onClick={() => {
+					dispatch(openSendMessage());
+				}}
 			>
 				Compose
 			</Button>
