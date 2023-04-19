@@ -3,6 +3,17 @@
     overflow: scroll;
 }
 
+/* hide scrollbar form chrome, opera, safari */
+.emailList::-webkit-scrollbar {
+    display: none;
+}
+
+/* hide scrollbar form firefox, IE, edge*/
+.emailList {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .emailList__Settings {
     position: sticky;
     top: 0;
@@ -21,4 +32,8 @@
     border-bottom: 1px solid whitesmoke;
     background-color: white;
     z-index: 999;
+}
+
+.emailList__list {
+    padding-bottom: 20%;
 }

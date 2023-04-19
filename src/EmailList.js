@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './EmailList.css';
 import {
 	ArrowDropDown,
@@ -16,8 +16,23 @@ import {
 import { IconButton } from '@mui/material';
 import Section from './Section';
 import EmailRow from './EmailRow';
+import { db } from './firebase';
 
 function EmailList() {
+	const [emails, setEmails] = useState();
+	useEffect(() => {
+		db.collection('emails')
+			.orderBy('timestamp', 'desc')
+			.onSnapshot((snapshot) =>
+				setEmails(
+					snapshot.docs.map((doc) => ({
+						id: doc.id,
+						data: doc.data(),
+					}))
+				)
+			);
+	}, []);
+
 	return (
 		<div className='emailList'>
 			<div className='emailList__Settings'>
@@ -55,6 +70,17 @@ function EmailList() {
 			</div>
 
 			<div className='emailList__list'>
+				{emails.map(({ id, data: { to, subject, message, timestamp } }) => {
+					<EmailRow
+						id={id}
+						key={id}
+						title={to}
+						subject={subject}
+						description={message}
+						time={new Date(timestamp?.seconds * 1000).toUTCString()}
+					/>;
+				})}
+				{/* 
 				<EmailRow
 					title='Github'
 					subject='gmail-clone'
@@ -72,7 +98,7 @@ function EmailList() {
 					subject='gmail-clone'
 					description='this is a test'
 					time='10pm'
-				/>
+				/> */}
 			</div>
 		</div>
 	);
